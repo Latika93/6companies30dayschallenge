@@ -1,0 +1,29 @@
+216. Combination Sum III
+from Leetcode
+
+#The qustion is similar to combination sum 2
+
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+
+    void fxn(int i, int target, List<Integer> cur, int k){
+        if(target == 0 && cur.size() == k){
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+
+        for(int j = i; j<=9; j++){
+            cur.add(j);
+            fxn(j+1, target - j, cur, k);
+            cur.remove(cur.size()-1);
+        }
+        
+    }
+
+    public List<List<Integer>> combinationSum3(int k, int n) {
+
+        List<Integer> cur = new ArrayList<>();
+        fxn(1, n, cur, k);
+        return res;
+    }
+}
