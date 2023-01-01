@@ -1,0 +1,32 @@
+299. Bulls and Cows
+Given the secret number secret and your friend's guess guess, return the hint for your friend's guess.
+
+class Solution {
+    public String getHint(String secret, String guess) {
+        HashMap <Character, Integer> guessm = new HashMap<>();
+        HashMap <Character, Integer> secretm = new HashMap<>();
+        int n = secret.length();
+        
+        for(int i = 0; i<n; i++){
+            guessm.put(guess.charAt(i), guessm.getOrDefault(guess.charAt(i),0)+1);
+            secretm.put(secret.charAt(i), secretm.getOrDefault(secret.charAt(i),0)+1);
+        }
+        
+        int cows = 0, bulls = 0;
+        
+        for(Map.Entry<Character, Integer> e: guessm.entrySet()){
+            if(secretm.containsKey(e.getKey())){
+                cows += Math.min(secretm.get(e.getKey()), e.getValue());
+            }
+        }
+        
+        for(int i = 0; i<n ; i++){
+            if(secret.charAt(i) == guess.charAt(i)) bulls++;
+        }
+        
+        cows-=bulls;
+        if(cows<0) cows = 0;
+        
+        return bulls + "A" + cows + "B";
+    }
+}
