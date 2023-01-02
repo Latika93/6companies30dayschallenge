@@ -1,0 +1,25 @@
+396. Rotate Function
+Return the maximum value of F(0), F(1), ..., F(n-1)
+
+class Solution {
+    public int maxRotateFunction(int[] nums) {
+        int first_sum = 0;
+        int cur_sum = 0;
+        
+        int n = nums.length;
+        for(int i = 0; i<n; i++){
+            first_sum += nums[i];
+            cur_sum +=nums[i]*i;
+        }
+        //O(n)
+        
+        int max = cur_sum;
+        
+        for(int i = 1; i<n; i++){
+            cur_sum = cur_sum - first_sum + nums[i-1]*n;
+            max = Math.max(max, cur_sum);
+        }
+        //O(n-1)
+        return max;
+    }
+}
