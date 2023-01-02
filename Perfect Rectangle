@@ -1,0 +1,47 @@
+391. Perfect Rectangle
+
+
+class Solution {
+ idea: Sum of Areas of given rectangles should be same as Bigger Rectangles
+ And no. of similar points should be 0 for avoiding overlappings or voids
+ 
+    public boolean isRectangleCover(int[][] rectangles) {
+        //Bottom left
+        int x1 = Integer.MAX_VALUE;
+        int y1 = Integer.MAX_VALUE;
+
+        //Top-left
+        int x2 = Integer.MIN_VALUE;
+        int y2 = Integer.MIN_VALUE;
+
+        Set<String> set = new HashSet<>();
+
+        int area = 0;
+
+        for(int [] r: rectangles){
+            x1 = Math.min(r[0], x1);
+            y1 = Math.min(r[1], y1);
+
+            x2 = Math.max(r[2], x2);
+            y2 = Math.max(r[3], y2);
+
+            area += (r[2]-r[0])*(r[3]-r[1]);
+
+            String pt1 = r[0] + " " + r[1];
+            String pt2 = r[0] + " " + r[3];
+            String pt3 = r[2] + " " + r[1];
+            String pt4 = r[2] + " " + r[3];
+
+            if(!set.add(pt1)) set.remove(pt1);
+            if(!set.add(pt2)) set.remove(pt2);
+            if(!set.add(pt3)) set.remove(pt3);
+            if(!set.add(pt4)) set.remove(pt4);
+        }
+      
+        //handling corner overlapping points
+        if(!set.contains(x1 + " " + y1) || !set.contains(x1 + " " + y2) || !set.contains(x2 + " " + y1) || !set.contains(x2 + " " + y2) || set.size() != 4) return false;
+
+
+        return area == (x2-x1) * (y2-y1);
+    }
+}
