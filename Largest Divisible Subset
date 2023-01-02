@@ -1,0 +1,40 @@
+368. Largest Divisible Subset
+Given a set of distinct positive integers nums, return the largest subset answer such that every pair (answer[i], answer[j]) of elements in this subset satisfies:
+
+    answer[i] % answer[j] == 0, or
+    answer[j] % answer[i] == 0
+
+If there are multiple solutions, return any of them.
+
+
+====
+class Solution {
+
+    List<Integer> result = new ArrayList<>();
+
+    void fxn(int ind, int []ar, List<Integer> cur, int pre){
+        if(cur.size() > result.size()){
+            result = new ArrayList<>(cur);
+        }
+
+        for(int i = ind; i < ar.length; i++){
+            if(ar[i] % pre == 0){
+                cur.add(ar[i]);
+                fxn(i+1, ar, cur, ar[i]);
+                cur.remove(cur.size()-1);
+            }
+        }
+    }
+
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        List<Integer> cur = new ArrayList<>();
+        Arrays.sort(nums);
+
+        fxn(0, nums, cur, 1);
+        return result;
+    }
+}
+
+TC: expoential
+Time Limit Exceeded bcj N = 1000
+
