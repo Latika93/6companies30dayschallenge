@@ -23,3 +23,7 @@ class Solution {
         return max;
     }
 }
+
+F(0) = (0A) + (1B) + (2C) + (3D) + (4E)
+F(1) = (4A) + (0B) + (1C) + (2D) + (3E)
+F(2) = (3A) + (4B) + (0C) + (1D) + (2*E)
