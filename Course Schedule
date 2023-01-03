@@ -1,0 +1,40 @@
+207. Course Schedule
+
+
+class Solution {
+    Set <Integer> set = new HashSet<>();
+    boolean dfs(Map<Integer, ArrayList<Integer>> map, int v){
+        
+        if(set.contains(v)) return false;
+        
+        if(map.get(v).size() == 0) return true;
+        
+        set.add(v);
+        
+        for(int neighbor: map.get(v)){
+            if(!dfs(map, neighbor)) return false;
+        }
+        
+        set.remove(v);
+        map.put(v, new ArrayList<>());
+        
+        return true;
+    }
+    
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, ArrayList<Integer>> map = new HashMap<>();
+        
+        for(int i = 0;  i<numCourses ; i++){
+            map.put(i, new ArrayList<>());
+        }
+        for(int i = 0;  i<prerequisites.length ; i++){
+            map.get(prerequisites[i][1]).add(prerequisites[i][0]);
+        }
+        
+        for(int i = 0; i<numCourses; i++){
+                if(!dfs(map, i)) return false;
+        }
+        
+       return true;
+    }
+}
