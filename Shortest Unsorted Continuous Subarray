@@ -1,0 +1,23 @@
+581. Shortest Unsorted Continuous Subarray
+
+Two pointer approach
+T.C: O(n^2)
+
+class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        int n = nums.length;
+        // int i = 0 , j = n-1;
+        int left = n, right = 0;
+        for(int i = 0; i<n-1; i++){
+            for(int j = i+1; j<n; j++){
+                if(nums[j]<nums[i]){
+                    left = Math.min(i, left);
+                    right = Math.max(j, right);
+                }
+            }
+        }
+
+        if(right-left < 0) return 0;
+        else return right - left + 1;
+    }
+}
