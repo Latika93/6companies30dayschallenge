@@ -1,0 +1,74 @@
+1976. Number of Ways to Arrive at Destination
+
+
+class Solution {
+    /*
+    1. Create Graph ArrayList<Integer, ArrayList<Pair<node , value>>>
+    2. Create Priority Queue[Min heap] ((x,y) => x.first - y.first)
+    3. 2 arrays ways, dist initialized with 0's and 1e9 + 7
+    4. 
+    */
+
+    public class Pair{
+        int first;
+        int second;
+        public Pair(int first, int second){
+            this.first = first;
+            this.second = second;
+        }
+    }
+
+    int mod = (int)1e9 + 7;
+    public int countPaths(int n, int[][] roads) {
+        //1.
+        ArrayList<ArrayList<Pair>> graph = new ArrayList<>();
+
+        int egdes = roads.length;
+
+        for(int i = 0; i<n; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i = 0; i<egdes; i++){
+            graph.get(roads[i][0]).add(new Pair(roads[i][1], roads[i][2]));
+            graph.get(roads[i][1]).add(new Pair(roads[i][0], roads[i][2]));
+        }
+
+        //2.
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x,y) -> x.first - y.first);
+
+        //3. 
+        int[] dist = new int[n];
+        int[] ways = new int[n];
+
+        for(int i = 0; i<n; i++){
+            dist[i] = (int)1e9;
+            ways[i] = 0;
+        }
+
+        dist[0] = 0;
+        ways[0] = 1;
+        pq.add(new Pair(0, 0));
+
+        while(pq.size() != 0){
+            int dis = pq.peek().first;
+            int node = pq.peek().second;
+            pq.remove();
+
+            for(Pair pair: graph.get(node)){
+                int adjNode = pair.first;
+                int wt = pair.second;
+
+                if(dis+wt < dist[adjNode]){
+                    dist[adjNode] = dis + wt;
+                    pq.add(new Pair(dis+wt, adjNode));
+                    ways[adjNode] = ways[node];
+                }else if(dis+wt == dist[adjNode]){
+                    ways[adjNode] = (ways[adjNode] + ways[node])%mod;
+                }
+            }
+        }
+        return ways[n-1]%mod;
+    }
+}
+
+TestCases run : 52/54
