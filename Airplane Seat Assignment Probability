@@ -1,0 +1,10 @@
+1227. Airplane Seat Assignment Probability
+
+
+// this is a brain teaser but can be solved with dp approach
+class Solution {
+    public double nthPersonGetsNthSeat(int n) {
+        if (n==1) return 1.0;
+        else return 0.5;
+    }
+}
