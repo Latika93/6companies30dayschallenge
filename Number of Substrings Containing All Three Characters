@@ -1,0 +1,23 @@
+1358. Number of Substrings Containing All Three Characters
+
+
+//Approach without sliding window
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int ans = 0;
+        int a = -1, b = -1, c = -1;
+
+        for(int i = 0; i<s.length(); i++){
+            if(s.charAt(i) == 'a') a = i;
+            else if(s.charAt(i) == 'b') b = i;
+            else c = i;
+
+            if(a == -1 || b == -1 || c == -1) continue;
+
+            int min = Math.min(a, Math.min(b, c));
+            ans += (min + 1); //consider count from i to 0 index (all)
+        }
+
+        return ans;
+    }
+}
