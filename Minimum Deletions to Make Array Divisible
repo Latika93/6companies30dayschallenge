@@ -1,0 +1,31 @@
+2344. Minimum Deletions to Make Array Divisible
+
+//Labeled hard but it was an easy problem
+class Solution {
+    public int minOperations(int[] nums, int[] numsDivide) {
+        int gcd = gcd(numsDivide);
+
+        Arrays.sort(nums);
+
+        for(int i = 0; i<nums.length && nums[i]<=gcd; i++){
+            if(gcd % nums[i] == 0) return i;
+        }
+
+        return -1;
+    }
+
+    int gcd(int []ar){
+        int g = ar[0];
+        int temp;
+
+        for(int e: ar){
+            while(e>0){
+                temp = g % e;
+                g = e;
+                e = temp;
+            }
+        }
+
+        return g;
+    }
+}
