@@ -1,0 +1,31 @@
+1392. Longest Happy Prefix
+
+// The Approach is KNP : Knuth morris pratt string matching algorithm
+
+class Solution {
+    public String longestPrefix(String s) {
+        int n = s.length();
+
+        if(n == 1) return "";
+
+        long prime = 31;
+        long mod = (long)1e9 + 7;
+        long pow = 1;
+
+        long prefix_hash = 0;
+        long suf_hash = 0;
+        int ans = 0;
+
+        for(int i = 0; i<n-1; i++){
+            prefix_hash = ((prefix_hash * prime) + (s.charAt(i)-'a'+1)) % mod;
+            suf_hash = (suf_hash + ((s.charAt(n-i-1)-'a'+1)*pow)%mod) % mod;
+        
+            pow  = (pow*prime) % mod;
+            if(prefix_hash == suf_hash) ans = i+1;
+        }
+
+        return s.substring(0, ans);
+    }
+}
+
+//To learn: "https://www.youtube.com/watch?v=V5-7GzOfADQ"
