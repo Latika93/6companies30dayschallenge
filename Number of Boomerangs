@@ -1,0 +1,32 @@
+447. Number of Boomerangs
+
+
+class Solution {
+    public int numberOfBoomerangs(int[][] points) {
+        int cnt = 0;
+        Map<Integer, Integer> freq = new HashMap<>();
+        for(int i = 0; i<points.length; i++){
+            for(int j = 0; j<points.length; j++){
+                if(i==j) continue;
+
+                int dis = dis(points[i], points[j]);
+                freq.put(dis, freq.getOrDefault(dis, 0) + 1);
+            }
+
+            for(int e: freq.values()){
+                cnt += e * (e-1);
+            }
+
+            freq.clear();
+        }
+
+        return cnt;
+    }
+
+    int dis(int []a, int []b){
+        int x = a[0]-b[0];
+        int y = a[1] - b[1];
+
+        return x*x + y*y ;
+    }
+}
