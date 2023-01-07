@@ -1,0 +1,61 @@
+
+1305. All Elements in Two Binary Search Trees
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+ 
+ //easy task: using O(n) space
+class Solution {
+
+    List<Integer> one = new ArrayList<>();
+    List<Integer> two = new ArrayList<>();
+
+    void inorder(TreeNode root, List<Integer> list){
+        if(root == null) return;
+
+        inorder(root.left, list);
+        list.add(root.val);
+        inorder(root.right, list);
+    }
+
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer> ans = new ArrayList<>();
+
+        inorder(root1, one);
+        inorder(root2, two);
+
+        int i = 0, j = 0;
+
+        while(i<one.size() && j<two.size()){
+            if(one.get(i) < two.get(j)){
+                ans.add(one.get(i++));
+            }else{
+                ans.add(two.get(j++));
+            }
+        }
+
+        while(i<one.size()){
+            ans.add(one.get(i++));
+        }
+
+        while(j<two.size()){
+            ans.add(two.get(j++));
+        }
+
+        return ans;
+    }
+}
