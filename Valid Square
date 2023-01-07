@@ -1,0 +1,47 @@
+593. Valid Square
+
+
+class Solution {
+    
+    static int leng(int[] a, int[] b){
+        int len = (a[0]-b[0])*(a[0]-b[0]) + (a[1]-b[1])*(a[1]-b[1]);
+        return len;
+    }
+    
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        
+        HashMap<Integer,Integer> map = new HashMap<>();
+        //there are six length here
+        
+        List<Integer> ll = new ArrayList<>();
+        ll.add(leng(p2,p1));
+        ll.add(leng(p3,p1));
+        ll.add(leng(p4,p1));
+        ll.add(leng(p3,p2));
+        ll.add(leng(p4,p2));
+        ll.add(leng(p4,p3));
+        
+        if((p1[0] == p2[0] && p1[1] == p2[1]) || (p2[0] == p3[0] && p2[1] == p3[1]) || (p3[0] == p4[0] && p3[1] == p4[1]) || (p1[0] == p4[0] && p1[1] == p4[1]) || (p2[0] == p4[0] && p2[1] == p4[1]) || (p1[0] == p3[0] && p1[1] == p3[1])){
+            return false;
+        }
+        
+        for(Integer e: ll){
+            if(map.containsKey(e)){
+                int n = map.get(e);
+                n++;
+                map.put(e, n);
+            }else{
+                map.put(e,1);
+            }
+        }
+        
+        if(map.size() != 2) return false;
+        
+        if(map.containsValue(4) && map.containsValue(2)){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+}
