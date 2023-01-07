@@ -1,0 +1,46 @@
+502. IPO
+
+//TreeMap : duplicates constraint
+class Solution {
+
+    public class Project implements Comparable<Project>{
+        int p;
+        int c;
+
+        public Project(int p, int c){
+            this.p = p;
+            this.c = c;
+        }
+
+        public int compareTo(Project pr){
+            return c - pr.c;
+        }        
+    }
+
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        int n = profits.length;
+        int pt = 0;
+
+        Project[] project = new Project[n];
+
+        for(int  i = 0; i<n ; i++){
+            project[i] = new Project(profits[i], capital[i]);
+        }
+
+        Arrays.sort(project);
+
+        PriorityQueue<Integer> pq = new PriorityQueue(n,Collections.reverseOrder());//maxheap
+
+        while(k-- >0){
+            while(pt<n && project[pt].c <= w){
+                pq.add(project[pt++].p);
+            }
+
+            if(pq.isEmpty()) break;
+
+            w += pq.poll();
+        }
+
+        return w;
+    }
+}
