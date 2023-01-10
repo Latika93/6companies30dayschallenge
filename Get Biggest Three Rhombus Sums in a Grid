@@ -1,0 +1,73 @@
+1878. Get Biggest Three Rhombus Sums in a Grid
+
+//Brute Force
+class Solution {
+    public int[] getBiggestThree(int[][] g) {
+        // PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        TreeSet<Integer> set = new TreeSet<>();
+        int n = g.length;
+        int m = g[0].length;
+
+        int ans[] = new int[3];
+
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<m; j++){
+
+                int tile = g[i][j];
+                set.add(tile);
+
+                int dis = 1;
+
+                while(i+dis<n && j-dis>=0 && j+dis<m){
+                    int next_row = i+dis;
+                    int right_col = j+dis;
+                    int left_col = j-dis;
+
+                    tile += g[next_row][right_col] + g[next_row][left_col];
+
+                    int check_sum = 0;
+
+                    while(true){
+                        left_col += 1;
+                        right_col -= 1;
+                        next_row += 1;
+
+                        if(left_col == m || right_col == 0 || next_row == n) break;
+
+                        if(left_col == right_col){
+                            check_sum += g[next_row][left_col];
+                            set.add(tile+check_sum);
+                            break;
+                        }
+
+                        check_sum += g[next_row][right_col] + g[next_row][left_col];
+                    }
+                    dis += 1;
+                }
+            }
+        }
+
+        System.out.println(set.size());
+
+        if(set.size() > 3){
+            ans[0] = set.last();
+            set.remove(ans[0]);
+
+            ans[1] = set.last();
+            set.remove(ans[1]);
+
+            ans[2] = set.last();
+            // set.remove(ar[2]);
+        }else{
+            int size = set.size();
+            int ar[] = new int[size];
+            for(int i = 0; i<size; i++){
+                ar[i] = set.last();
+                set.remove(ar[i]);
+            }
+            return ar;
+        }
+
+        return ans;
+    }
+}
