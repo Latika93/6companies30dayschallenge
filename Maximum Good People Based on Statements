@@ -1,0 +1,47 @@
+2151. Maximum Good People Based on Statements
+
+//just checking validation of all combinations
+class Solution {
+    public int maximumGood(int[][] st) {
+        int n = st.length;
+
+        int combinations = 1<<n; //2^n
+        int max = 0;
+        int roles[] = new int[n];
+
+        for(int mask = 0; mask < combinations; mask++){
+            int count = fillAndCount(roles, mask); // fill the array
+
+            if(valid(roles, st)){
+                max = Math.max(max, count);
+            }
+        }
+        return max;
+    }
+
+    int fillAndCount(int []roles, int mask){
+        int cnt = 0;
+
+        for(int i = 0; i<roles.length; i++){
+            cnt += roles[i] = mask&1;
+            mask>>=1;
+        }
+
+        return cnt;
+    }
+
+    boolean valid(int roles[], int states[][]){
+        int n = roles.length;
+
+        for(int i = 0; i<n; i++){
+            if(roles[i] == 0) continue; //if person may lye that ignore him
+
+            for(int j = 0; j<n; j++){
+                if(states[i][j] == 2) continue;
+
+                if(states[i][j] != roles[j]) return false;
+            }
+        }
+        return true;
+    }
+}
