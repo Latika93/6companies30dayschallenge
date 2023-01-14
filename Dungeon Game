@@ -1,0 +1,30 @@
+174. Dungeon Game
+
+//It was an easy problem, just compare neihbours to find minimum(from bottom-right to top-left).if found negative put 1 there.
+class Solution {
+    public int calculateMinimumHP(int[][] dungeon) {
+        int rows = dungeon.length;
+        int cols = dungeon[0].length;
+
+        int dp[][] = new int[rows+1][cols+1];
+
+        for(int i = 0; i<=rows; i++){
+            for(int j = 0; j<= cols; j++){
+                dp[i][j] = Integer.MAX_VALUE;
+            }
+        }
+
+        dp[rows-1][cols] = 1;
+        dp[rows][cols-1] = 1;
+
+        for(int i = rows-1; i>=0; i--){
+            for(int j = cols-1; j>=0; j--){
+                int min = Math.min(dp[i][j+1], dp[i+1][j]) - dungeon[i][j];
+                if(min>0) dp[i][j] = min;
+                else dp[i][j] = 1;
+            }
+        }
+
+        return dp[0][0];
+    }
+}
