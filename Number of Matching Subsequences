@@ -1,0 +1,46 @@
+792. Number of Matching Subsequences
+
+//Approach 1: Using HashMap
+class Solution {
+    public int numMatchingSubseq(String s, String[] words) {
+        Map<Character, Queue<String>> map = new HashMap<>();
+
+        for(int i = 0; i<s.length(); i++){
+            char cur = s.charAt(i);
+            map.putIfAbsent(cur, new LinkedList<String>());
+        }
+
+        for(String e: words){
+            char cur = e.charAt(0);
+            if(map.containsKey(cur)){
+                map.get(cur).offer(e);
+            }
+        }
+
+        int ans = 0;
+
+        for(int i = 0; i<s.length(); i++){
+            char cur = s.charAt(i);
+            Queue<String> q = map.get(cur);
+
+            int size = q.size();
+
+            for(int j = 0; j<size; j++){
+                String str = q.poll();
+
+                if(str.length() == 1) ans++;
+                else{
+                    if(map.containsKey(str.charAt(1))){
+                        // map.put(str.charAt(1), str.substring(1));
+                        map.get(str.charAt(1)).add(str.substring(1));
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+}
+
+//Approach 2: Using Trie
+Loading..
