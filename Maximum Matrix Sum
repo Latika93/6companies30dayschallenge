@@ -1,0 +1,29 @@
+1975. Maximum Matrix Sum
+
+//if negative nums are even => they are eventually going to be positive after a number of operations
+  else: Minimum (absolute value) of matrix should get subtracted from sum
+class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+        long sum = 0;
+        long min = Integer.MAX_VALUE;
+
+        long cnt = 0;
+
+        for(int i = 0; i<matrix.length; i++){
+            for(int j = 0; j<matrix[0].length; j++){
+                if(matrix[i][j] < 0){
+                    cnt++;
+                    // min = Math.max(min, Math.abs(matrix[i][j]));
+                }
+                min = Math.min(min, Math.abs(matrix[i][j]));
+                sum += Math.abs(matrix[i][j]);
+            }
+        }
+
+        if(cnt%2 == 0){
+            return sum;
+        }else{
+            return sum - 2*min;
+        }
+    }
+}
