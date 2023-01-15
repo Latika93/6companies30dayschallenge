@@ -1,0 +1,29 @@
+688. Knight Probability in Chessboard
+
+
+class Solution {
+    int dir[][] = {{-2,-1}, {-2,1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}};
+    HashMap<String, Double> dp;
+
+    public double knightProbability(int n, int k, int row, int col) {
+        dp = new HashMap<>();
+
+        return helper(n, k, row, col);
+    }
+
+    public double helper(int n, int k, int row, int col) {
+        if(row>=n || row < 0 || col>=n || col < 0) return 0;
+
+        if(k == 0) return 1;
+        
+        if(dp.containsKey( row + "r" + col + "c" + k)) return dp.get(row + "r" + col + "c" + k);
+
+        double prob = 0.0;
+        for(int []d : dir){
+            prob += (helper(n, k-1, row + d[0], col + d[1]) / 8.0);
+        }
+
+        dp.put(row + "r" + col + "c" + k, prob);
+        return prob;
+    }
+}
