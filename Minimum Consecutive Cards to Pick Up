@@ -1,0 +1,24 @@
+2260. Minimum Consecutive Cards to Pick Up
+
+
+class Solution {
+    public int minimumCardPickup(int[] cards) {
+        int flag = 1;
+        int min = Integer.MAX_VALUE;
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0; i<cards.length; i++){
+            if(map.containsKey(cards[i])){
+                flag = 0;
+                int minus = i - map.get(cards[i])+1;
+                min = Math.min(min, minus);
+                map.put(cards[i], i);
+            }else{
+                map.put(cards[i], i);
+            }
+        }
+
+        if(flag == 1) return -1;
+        return min;
+    }
+}
