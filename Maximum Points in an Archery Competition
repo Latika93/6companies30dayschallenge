@@ -1,0 +1,49 @@
+2212. Maximum Points in an Archery Competition
+
+
+class Solution {
+
+    int max = 0;
+    int ans[] = new int[12];
+
+    void bobPlay(int index, int alice[], int bob[], int score, int remaining_arrows){
+        if(index<0 || remaining_arrows<=0){
+            // max = Math.max(max, score);
+            if(max<=score){
+                max = score;
+                for(int i = 0; i<12; i++){
+                    ans[i] = bob[i];
+                }
+            }
+            return;
+        }
+
+        //bob doesn't compete
+        bobPlay(index-1, alice, bob, score, remaining_arrows);
+
+        //bob tries to compete
+        if(remaining_arrows>alice[index]){
+            bob[index] = alice[index]+1;
+            remaining_arrows -= bob[index];
+            score += index;
+            bobPlay(index-1, alice, bob, score, remaining_arrows);
+            bob[index] = 0;
+        }
+    }
+
+    public int[] maximumBobPoints(int numArrows, int[] aliceArrows) {
+        int bob[] = new int[12];
+        bobPlay(11, aliceArrows, bob, 0, numArrows);
+
+        int used = 0;
+
+        for(int e: ans){
+            used+=e;
+        }
+        if(numArrows>used){
+            ans[0] += (numArrows - used);
+        }
+
+        return ans;
+    }
+}
