@@ -1,0 +1,34 @@
+2343. Query Kth Smallest Trimmed Number
+
+
+public class Numb{
+    int index;
+    String num;
+
+    public Numb(int index, String num){
+        this.index = index;
+        this.num = num;
+    }
+}
+
+class Solution {
+
+    public int[] smallestTrimmedNumbers(String[] nums, int[][] q) {
+        
+        int [] ans = new int[q.length];
+        int n = nums[0].length();
+
+        for(int i = 0; i<q.length; i++){
+            int from = n - q[i][1];
+            ArrayList<Numb> ar = new ArrayList<>();
+            for(int j = 0; j<nums.length; j++){
+                String cur_num = nums[j].substring(from, n);
+                ar.add(new Numb(j, cur_num));
+            }
+            Collections.sort(ar, (a, b)-> a.num.compareTo(b.num));
+            ans[i] = ar.get(q[i][0]-1).index;
+        }
+
+        return ans;
+    }
+}
