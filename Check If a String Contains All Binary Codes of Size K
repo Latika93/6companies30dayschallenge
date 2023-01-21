@@ -1,0 +1,15 @@
+1461. Check If a String Contains All Binary Codes of Size K
+
+
+//interesting solution
+class Solution {
+    public boolean hasAllCodes(String s, int k) {
+        Set<String> binaries = new HashSet<>();
+        for(int i = 0; i<s.length() - k +1; i++){
+            binaries.add(s.substring(i, i+k));
+        }
+
+        int n = (int)Math.pow(2, k);
+        return binaries.size() == n;
+    }
+}
