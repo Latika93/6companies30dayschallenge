@@ -1,0 +1,56 @@
+778. Swim in Rising Water
+
+
+
+public class Pair{
+    int val;
+    int r;
+    int c;
+    public Pair(int val, int r, int c){
+        this.val = val;
+        this.r = r;
+        this.c = c;
+    }
+}
+
+class Cmp implements Comparator<Pair>{
+    public int compare(Pair p1, Pair p2){
+        if(p1.val > p2.val) return 1;
+        else if(p1.val < p2.val) return -1;
+        return 0;
+    }
+}
+
+class Solution {
+    public int swimInWater(int[][] grid) {
+        int n = grid.length;
+        int [][]dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        PriorityQueue<Pair> pq = new PriorityQueue<>(new Cmp());
+        Set<String> vis = new HashSet<>();
+
+
+        vis.add(0 + "-" + 0);
+        pq.offer(new Pair(grid[0][0], 0, 0));
+
+        while(!pq.isEmpty()){
+            Pair cur = pq.poll();
+            int t = cur.val;
+
+            if(cur.r == n-1 && cur.c == n-1) return t;
+
+            for(int []dir: dirs){
+                int r = dir[0] + cur.r;
+                int c = dir[1] + cur.c;
+
+                if(r<0 || r == n || c<0 || c == n || vis.contains(r + "-" + c)){
+                    continue;
+                }
+
+                vis.add(r + "-" + c);
+                pq.add(new Pair(Math.max(t, grid[r][c]), r, c));
+            }
+        }
+
+        return 0;
+    }
+}
