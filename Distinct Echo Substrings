@@ -1,0 +1,46 @@
+1316. Distinct Echo Substrings
+
+//T.C = O(n^2)
+//S.C = O(no.of distinct echo substring)
+class Solution {
+    public int distinctEchoSubstrings(String text) {
+        int n = text.length();
+        int cnt = 0;
+        Set<String> set = new HashSet<>();
+
+        if(text == null || text.length() == 0) return 0;
+
+        for(int i = 0; i<n; i++){
+            for(int j = i+1; j<n && (j-i)<=(n-j); j++){
+                String s = text.substring(i, j);
+                String t = text.substring(j, j+s.length());
+                
+                // System.out.println(s + " " + t);
+                if(s.equals(t)){
+                    set.add(s);
+                }
+            }
+        }
+
+        return set.size();
+    }
+}
+
+//100%
+public int distinctEchoSubstrings(String s) {
+	Set<String> set = new HashSet<>();
+	for (int len = 1; len <= s.length() / 2; len++) {
+		for (int l = 0, r = len, count = 0; l < s.length() - len; l++, r++) {
+			if (s.charAt(l) == s.charAt(r)) count++;
+			else count = 0;
+
+			if (count == len) {
+				set.add(s.substring(l - len + 1, l + 1));
+				count--;
+			}
+		}
+	}1316. Distinct Echo Substrings
+
+
+	return set.size();
+}
