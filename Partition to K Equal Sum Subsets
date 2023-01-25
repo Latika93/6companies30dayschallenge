@@ -1,0 +1,39 @@
+698. Partition to K Equal Sum Subsets
+
+
+class Solution {
+    boolean vis[];
+    int target;
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        
+        
+
+        int n = nums.length;
+        vis = new boolean[n];
+        int sum = 0;
+        for(int e: nums){
+            sum += e;
+        }
+        target = sum/k;
+
+        if(sum%k != 0) return false;
+
+        return backtrack(0, nums, k, 0);
+    }
+
+    boolean backtrack(int index, int []nums, int k, int subsetSum){
+        if(k == 0) return true;
+
+        if(subsetSum == target) return backtrack(0, nums, k-1, 0);
+
+        for(int i = index; i<nums.length; i++){
+            if(vis[i] == true || subsetSum + nums[i] > target) continue;
+
+            vis[i] = true;
+            if(backtrack(i+1, nums, k, subsetSum + nums[i]) == true) return true;
+            vis[i] = false;
+        }
+
+        return false;
+    }
+}
