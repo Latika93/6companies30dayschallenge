@@ -1,0 +1,77 @@
+478. Generate Random Point in a Circle
+
+
+//Approach1: 
+But Not valid Completely
+class Solution {
+
+    double dist;
+    double x_range[] = new double[2];
+    double y_range[] = new double[2];;
+    Random rd = new Random();
+
+    public Solution(double radius, double x_center, double y_center) {
+        dist = radius;
+        x_range[0] = x_center - radius;
+        x_range[1] = x_center + radius;
+        y_range[0] = y_center - radius;
+        y_range[1] = y_center + radius;
+
+    }
+    
+    public double[] randPoint() {
+        
+        double d = -1;
+        double x = x_range[0] + x_range[1];
+        double y = y_range[0] + y_range[1];
+        
+        double[] ret = {0.0, 0.0};
+
+        while(true){
+            double random_x = (rd.nextDouble()*(x_range[0] + x_range[1]))-x_range[0];
+            double random_y = (rd.nextDouble()*(y_range[0] + y_range[1]))-y_range[0];
+
+            d = distancefromcenter(random_x, random_y, x, y);
+            ret[0] = random_x;
+            ret[1] = random_y;
+            if(d<=dist) return ret;
+        }
+        
+        // return ret;
+    }
+
+    double distancefromcenter(double a, double b, double x, double y){
+        return Math.sqrt((x-a)*(x-a) + (y-b)*(y-b));
+    }
+}
+
+
+//Approach: Maths{}
+class Solution {
+
+    double R;
+    double X;
+    double Y;
+
+    public Solution(double radius, double x_center, double y_center) {
+        this.R = radius;
+        this.X = x_center;
+        this.Y = y_center;
+    }
+    
+    public double[] randPoint() {
+        double len = Math.sqrt(Math.random())*R;
+        double angle = Math.random()*2*Math.PI;
+
+        double x = X + len*Math.cos(angle);
+        double y = Y + len*Math.sin(angle);
+
+        return new double[]{x,y};
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(radius, x_center, y_center);
+ * double[] param_1 = obj.randPoint();
+ */
