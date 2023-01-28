@@ -1,0 +1,30 @@
+2400. Number of Ways to Reach a Position After Exactly k Steps
+
+
+class Solution {
+    public int numberOfWays(int startPos, int endPos, int k) {
+
+        int dp[][] = new int[3000][k+1];
+        for(int i =0; i<dp.length; i++){
+            for(int j = 0; j<dp[0].length; j++){
+                dp[i][j] = -1;
+            }
+        }
+
+        return fxn(endPos, startPos, k, dp);
+    }
+
+    int fxn(int endPos, int pos, int k, int dp[][]){
+        if(pos == endPos && k == 0) return 1;
+        if(k <= 0) return 0;
+
+        // if(dp.containsKey(pos+"-"+k)) return dp.get(pos+"-"+k);
+        if(dp[pos+1000][k] != -1) return dp[pos+1000][k];
+
+        int left = fxn(endPos, pos-1, k-1, dp);
+        int right = fxn(endPos, pos+1, k-1, dp);
+
+        // dp.put(pos+"-"+k, (left+right));
+        return dp[pos+1000][k] = (left+right)%(int)(1e9+7);
+    }
+}
