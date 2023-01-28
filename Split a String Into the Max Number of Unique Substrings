@@ -1,0 +1,25 @@
+1593. Split a String Into the Max Number of Unique Substrings
+
+
+class Solution {
+    Set<String> set = new HashSet<>();
+    public int maxUniqueSplit(String s) {
+
+        return backtrack(0, s);
+    }
+
+    int backtrack(int index, String s){
+        if(index == s.length()) return 0;
+        int res = -1;
+
+        for(int i = index + 1; i<=s.length(); i++){
+            String sub = s.substring(index, i);
+            if(!set.add(sub)) continue;
+
+            int returny = backtrack(i, s);
+            if(returny >= 0) res = Math.max(res, returny+1);
+            set.remove(sub);
+        }
+        return res;
+    }
+}
