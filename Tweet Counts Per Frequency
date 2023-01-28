@@ -1,0 +1,55 @@
+1348. Tweet Counts Per Frequency
+
+
+class TweetCounts {
+
+    Map<String, List<Integer>> map;
+    public TweetCounts() {
+        map = new HashMap<>();
+    }
+    
+    public void recordTweet(String tweetName, int time) {
+        if(!map.containsKey(tweetName)){
+            map.put(tweetName, new ArrayList());
+            map.get(tweetName).add(time);
+        }else{
+            map.get(tweetName).add(time);
+        }
+    }
+    
+    public List<Integer> getTweetCountsPerFrequency(String freq, String tweetName, int startTime, int endTime) {
+        List<Integer> ans = new ArrayList<>();
+
+        List<Integer> list = map.get(tweetName);
+
+        int period = 0;
+        if(freq.equals("hour")){
+            period = 3600;
+        }
+        if(freq.equals("day")){
+            period = 86400;
+        }
+        if(freq.equals("minute")){
+            period = 60;
+        }
+
+        for(int i = 0; i<=(endTime - startTime)/period; i++){
+            ans.add(0);
+        }
+
+        for(int t: list){
+            if(startTime<=t && t<= endTime){
+                int ind = (t-startTime)/period;
+                ans.set(ind, ans.get(ind) + 1);
+            }
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your TweetCounts object will be instantiated and called as such:
+ * TweetCounts obj = new TweetCounts();
+ * obj.recordTweet(tweetName,time);
+ * List<Integer> param_2 = obj.getTweetCountsPerFrequency(freq,tweetName,startTime,endTime);
+ */
