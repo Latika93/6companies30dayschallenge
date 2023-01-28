@@ -1,0 +1,18 @@
+1503. Last Moment Before All Ants Fall Out of a Plank
+
+//Brain-Teaser
+class Solution {
+    public int getLastMoment(int n, int[] left, int[] right) {
+        int l_max = -1;
+        int r_min = n;
+        for(int e: left){
+            l_max = Math.max(l_max, e);
+        }
+
+        for(int e: right){
+            r_min = Math.min(r_min, e);
+        }
+
+        return Math.max(l_max, n-r_min);
+    }
+}
