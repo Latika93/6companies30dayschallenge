@@ -1,0 +1,70 @@
+1856. Maximum Subarray Min-Product
+
+
+class Solution {
+    int mod = (int)1e9+7;
+    public int maxSumMinProduct(int[] nums) {
+        int n = nums.length;
+        // 1. Prefix sum
+        long prefix[] = new long[n];
+
+        // prefix[0] = 0;
+        prefix[0] = nums[0];
+        for(int i = 1; i<n; i++){
+            prefix[i] = (long)nums[i] + prefix[i-1];
+        }
+
+        long max = 0l;
+        int nsl[] = nsl(nums);
+        int nsr[] = nsr(nums);
+
+        for(int i = 0; i<nums.length; i++){
+            long sum = nsl[i] == -1 ? prefix[nsr[i] - 1] :  prefix[nsr[i] - 1] -  prefix[nsl[i]];
+            long prod = sum * nums[i];
+
+            max = Math.max(prod, max);
+        }
+
+        return (int)(max%mod);
+    }
+
+    int[] nsl(int nums[]){
+        int [] nsl = new int[nums.length];
+        Stack<Integer> st = new Stack<>();
+        for(int i = 0; i<nums.length; i++){
+            while(!st.empty() && nums[st.peek()]>=nums[i]){
+                st.pop();
+            }
+
+            if(st.isEmpty()){
+                nsl[i] = -1;
+            }else{
+                nsl[i] = st.peek();
+            }
+
+            st.push(i);
+        }
+
+        return nsl;
+    }
+
+    int[] nsr(int nums[]){
+        int [] nsr = new int[nums.length];
+        Stack<Integer> st = new Stack<>();
+        for(int i = nums.length-1; i>=0; i--){
+            while(!st.empty() && nums[st.peek()]>=nums[i]){
+                st.pop();
+            }
+
+            if(st.isEmpty()){
+                nsr[i] = nums.length;
+            }else{
+                nsr[i] = st.peek();
+            }
+
+            st.push(i);
+        }
+
+        return nsr;
+    }
+}
