@@ -1,0 +1,82 @@
+2034. Stock Price Fluctuation
+
+//Approach 1: Brute frce using HashMap(Giving TLE)
+class StockPrice {
+
+    TreeMap<Integer, Integer> map;
+    PriorityQueue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());
+    PriorityQueue<Integer> min = new PriorityQueue<>();
+
+    int curr = 0;
+
+    public StockPrice() {
+        map = new TreeMap<>();
+    }
+    
+    public void update(int timestamp, int price) {
+        curr = Math.max(curr, timestamp);
+        if(map.containsKey(timestamp)){
+            int cur = map.get(timestamp);
+            max.remove(cur);
+            max.add(price);
+            min.remove(cur);
+            min.add(price);
+        }else{
+            curr = price;
+            // map.put(timestamp, price);
+            max.add(price);
+            min.add(price);
+        }
+        map.put(timestamp, price);
+    }
+    
+    public int current() {
+        return map.get(map.lastKey());
+    }
+    
+    public int maximum() {
+        return max.peek();
+    }
+    
+    public int minimum() {
+        return min.peek();
+    }
+}
+
+//Approach 2: Using 2 TreeMap
+class StockPrice {
+
+    TreeMap<Integer, Integer> times;
+    TreeMap<Integer, Set<Integer>> values;
+    public StockPrice() {
+        times = new TreeMap<>();
+        values = new TreeMap<>();
+    }
+    
+    public void update(int timestamp, int price) {
+        if(times.containsKey(timestamp)){
+            int oldPrice = times.get(timestamp);
+            Set<Integer> set = values.get(oldPrice);
+            set.remove(timestamp);
+            if(set.isEmpty()){
+                values.remove(oldPrice);
+            }
+        }
+        values.putIfAbsent(price, new HashSet<>());
+        values.get(price).add(timestamp);
+        times.put(timestamp, price);
+
+    }
+    
+    public int current() {
+        return times.get(times.lastKey());
+    }
+    
+    public int maximum() {
+        return values.lastKey();
+    }
+    
+    public int minimum() {
+        return values.firstKey();
+    }
+}
