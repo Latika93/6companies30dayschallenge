@@ -1,0 +1,28 @@
+1054. Distant Barcodes
+
+class Solution {
+    public int[] rearrangeBarcodes(int[] b) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int e: b){
+            map.put(e, map.getOrDefault(e, 0) + 1);
+        }
+
+        List<Map.Entry<Integer, Integer>> ll = new ArrayList<>(map.entrySet());
+        Collections.sort(ll, Map.Entry.<Integer, Integer>comparingByValue().reversed());
+
+        int ans[] = new int[b.length];
+        int i = 0;
+
+        for(Map.Entry<Integer, Integer> e: ll){
+            int freq = e.getValue();
+
+            while(freq-->0){
+                ans[i] = e.getKey();
+                i+=2;
+                if(i>=b.length) i = 1;
+            }
+        } 
+
+        return ans;
+    }
+}
