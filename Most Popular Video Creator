@@ -1,0 +1,50 @@
+2456. Most Popular Video Creator
+
+
+
+class Solution {
+    public List<List<String>> mostPopularCreator(String[] creators, String[] ids, int[] views) {
+        Map<String, Pair> map = new HashMap<>();
+        long count = 0;
+
+        for(int i = 0; i<creators.length; i++){
+            if(!map.containsKey(creators[i])){
+                map.put(creators[i], new Pair(views[i], ids[i], views[i]));
+                count = Math.max(count, map.get(creators[i]).sum);
+                continue;
+            }else{
+                map.get(creators[i]).sum += views[i];
+                if(map.get(creators[i]).max_view < views[i] || map.get(creators[i]).max_view == views[i] && (ids[i].compareTo(map.get(creators[i]).smallLexico) < 0)){
+                    map.put(creators[i], new Pair(map.get(creators[i]).sum, ids[i], views[i]));
+                }
+            }
+
+            count = Math.max(count, map.get(creators[i]).sum);
+        }
+
+        List<List<String>> ans = new ArrayList<>();
+        for(Map.Entry<String, Pair> e: map.entrySet()){
+            if(e.getValue().sum == count){
+                List<String> cur = new ArrayList<>();
+                cur.add(e.getKey());
+                cur.add(e.getValue().smallLexico);
+
+                ans.add(cur);
+            }
+        }
+
+        return ans;
+    }
+}
+
+class Pair{
+    long sum = 0;
+    String smallLexico;
+    int max_view = 0;
+
+    public Pair(long sum, String smallLexico, int max_view){
+        this.sum = sum;
+        this.smallLexico = smallLexico;
+        this.max_view = max_view;
+    }
+}
