@@ -1,0 +1,61 @@
+ Cheapest Flights Within K Stops
+ 
+ class Pair{
+    int first;
+    int second;
+    public Pair(int first, int second){
+        this.first = first;
+        this.second = second;
+    }
+}
+
+class Solution {
+
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+
+        Map<Integer, ArrayList<Pair>> graph = new HashMap<>();
+        for(int[] e: flights){
+            if(graph.containsKey(e[0])){
+                graph.get(e[0]).add(new Pair(e[1], e[2]));
+            }else{
+                graph.put(e[0], new ArrayList<Pair>());
+                graph.get(e[0]).add(new Pair(e[1], e[2]));
+            }
+        } 
+
+        int dis[] = new int[n];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        // dis[src] = 0;
+
+        Queue<Pair> q = new LinkedList<>(); //node, distance
+        q.add(new Pair(src, 0));
+
+        int stops = 0;
+
+        while(stops<=k && q.size() != 0){
+            int size = q.size();
+            while(size-- > 0){
+                Pair poped = q.poll();
+                int node = poped.first;
+                int dist = poped.second;
+
+                if(!graph.containsKey(node)) continue;
+
+                for(Pair neighbour: graph.get(node)){
+                    int curnode = neighbour.first;
+                    int wt = neighbour.second;
+
+                    if(dist +  wt>= dis[curnode]) continue;
+
+                    dis[curnode] = dist +  wt;
+                    q.add(new Pair(curnode, dis[curnode]));
+                }
+            }
+            stops++;
+        }
+
+        if(dis[dst]== Integer.MAX_VALUE) return -1;
+        return dis[dst];
+    }
+        
+}
