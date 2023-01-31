@@ -1,0 +1,52 @@
+Sort an Array
+
+//Merge Sort
+class Solution {
+    
+    static void merge(int ar[], int start, int mid, int end){
+        int i = start;
+        int j = mid+1;
+        int k = 0;
+        int b[] = new int[end-start+1];
+        
+        while(i<=mid && j<=end){
+            if(ar[i] <= ar[j]){
+                b[k] = ar[i];
+                i++;k++;
+            }else{
+                b[k] = ar[j];
+                j++; k++;
+            }
+        }
+        
+        while(i<=mid){
+            b[k] = ar[i];
+            i++;k++;
+        }
+        
+        while(j<=end){
+            b[k] = ar[j];
+            j++; k++;
+        }
+        
+        for(int t = start, s = 0; s<b.length ; s++,t++){
+            ar[t] = b[s];
+        }
+    }
+    
+    static void mergeSort(int []ar, int l, int r){
+        if(l<r){
+            int mid = l + (r-l)/2;
+            mergeSort(ar, l, mid);
+            mergeSort(ar, mid+1, r);
+            merge(ar, l, mid, r);
+        }
+    }
+    
+    public int[] sortArray(int[] nums) {
+        
+        mergeSort(nums, 0, nums.length-1);
+        
+        return nums;
+    }
+}
