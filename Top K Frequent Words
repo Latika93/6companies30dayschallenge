@@ -1,0 +1,17 @@
+Top K Frequent Words
+
+**Try some other approach**
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> frequency = new HashMap<>();
+        
+        for(int i = 0; i<words.length; i++){
+            frequency.put(words[i], frequency.getOrDefault(words[i],0) + 1);
+        }
+        
+        List<String> ans = new ArrayList<>(frequency.keySet());
+        Collections.sort(ans, (w1, w2) -> frequency.get(w1).equals(frequency.get(w2)) ? w1.compareTo(w2) : frequency.get(w2)-                 frequency.get(w1));
+                                                                                                                             
+        return ans.subList(0,k);                                                                                                                     
+    } 
+}
