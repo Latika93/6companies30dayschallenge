@@ -1,0 +1,53 @@
+Fraction to Recurring Decimal
+
+
+class Solution {
+    public String fractionToDecimal(int N, int D) {
+        boolean neg = false;
+        boolean rec = false;
+        
+        long n = N;
+        long d = D;
+        
+        if(n==0) return 0 + "";
+        
+        if(n<0 || d<0) neg = true;
+        if(n<0 && d<0) neg = false;
+        
+        n = Math.abs(n);
+        d = Math.abs(d);
+        
+        String right = "";
+        Map<Long, Integer> map = new HashMap<>();
+        
+        long rem = n%d;
+        
+        while(rem!=0 && !map.containsKey(rem)){
+            map.put(rem, right.length());
+            rem = rem * 10;
+            right += String.valueOf(rem/d);
+            rem = rem%d;
+        }
+        
+        String back = "";
+        String f = "";
+        if(rem != 0){
+            rec = true;
+            back = right.substring(map.get(rem));
+            f = right.substring(0, map.get(rem));
+        }else{
+            back = right;
+        }
+        
+        String front = String.valueOf(n/d);
+        if(rec){
+            return (neg) ? "-" + front + "." + f + "(" + back + ")" : front + "." + f + "(" + back + ")";
+        }else{
+            if(n%d == 0){
+                return (neg)? "-"+front : front;
+            }else{
+                return (neg)? "-"+front + "." + back : front + "." + back;
+            }
+        }
+    }
+}
