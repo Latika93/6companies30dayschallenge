@@ -1,0 +1,27 @@
+Restore IP Addresses
+
+class Solution {
+    List<String> ans = new ArrayList<>();
+
+    void f(int index, String cur, int k, String s){
+        if(k == 4 && index == s.length()){
+            ans.add(cur.substring(0, cur.length()-1));
+            return;
+        }
+
+        if(k>4) return;
+
+        for(int i = index; i<index+3; i++){
+            if(i<s.length() && (index == i || s.charAt(index) != '0') && Integer.parseInt(s.substring(index, i+1)) <= 255){
+                f(i+1, cur + s.substring(index, i+1) + ".", k+1, s);
+            }
+        }
+    }
+
+    public List<String> restoreIpAddresses(String s) {
+        
+        String cur = "";
+        f(0, cur, 0, s);
+        return ans;
+    }
+}
