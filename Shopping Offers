@@ -1,0 +1,89 @@
+638. Shopping Offers
+
+
+//Approach 1: Recursion (TLE) 64/65 passed
+class Solution {
+    int n;
+    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        n = needs.size();
+        return shop(price, special, needs);
+    }
+
+    int shop(List<Integer> price, List<List<Integer>> special, List<Integer> needs){
+        
+        int res = pay(price, needs);
+        int special_index = 0;
+
+        for(List<Integer> offer: special){
+            List<Integer> clone = new ArrayList<>(needs);
+
+            for(special_index = 0; special_index<n; special_index++){
+                int diff = needs.get(special_index) - offer.get(special_index);
+                if(diff<0){
+                    break;
+                }
+                clone.set(special_index, diff);
+            }
+
+            if(special_index == n){
+                res = Math.min(res, offer.get(n) + shoppingOffers(price, special, clone));
+            }
+        }
+        return res;
+    }
+
+    int pay(List<Integer> price, List<Integer> needs){
+        int cost = 0;
+        for(int i = 0; i<price.size(); i++){
+            cost += price.get(i) * needs.get(i);
+        }
+
+        return cost;
+    }
+}
+
+//Just simple Memoize
+class Solution {
+    int n;
+    Map<List<Integer>, Integer> dp = new HashMap<>(); 
+    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        n = needs.size();
+        return shop(price, special, needs);
+    }
+
+    int shop(List<Integer> price, List<List<Integer>> special, List<Integer> needs){
+        
+        int res = pay(price, needs);
+        int special_index = 0;
+
+        if(dp.containsKey(needs)) return dp.get(needs);
+
+        for(List<Integer> offer: special){
+            List<Integer> clone = new ArrayList<>(needs);
+
+            for(special_index = 0; special_index<n; special_index++){
+                int diff = needs.get(special_index) - offer.get(special_index);
+                if(diff<0){
+                    break;
+                }
+                clone.set(special_index, diff);
+            }
+
+            if(special_index == n){
+                res = Math.min(res, offer.get(n) + shoppingOffers(price, special, clone));
+            }
+        }
+
+        dp.put(needs, res);
+        return res;
+    }
+
+    int pay(List<Integer> price, List<Integer> needs){
+        int cost = 0;
+        for(int i = 0; i<price.size(); i++){
+            cost += price.get(i) * needs.get(i);
+        }
+
+        return cost;
+    }
+}
